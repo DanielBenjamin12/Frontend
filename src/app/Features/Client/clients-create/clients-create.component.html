@@ -1,0 +1,243 @@
+<section class="min-h-[calc(100vh-4rem)] px-4 py-8 sm:px-6 lg:px-8 bg-gray-50">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-2">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900">Crear nuevo cliente</h1>
+          <p class="mt-1 text-sm text-gray-600">Completa el formulario con la información del cliente</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="bg-white rounded-xl shadow-sm ring-1 ring-gray-900/5">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-6 sm:p-8">
+        <div class="space-y-6">
+          <!-- Nombre -->
+          <div>
+            <label for="nombre" class="block text-sm font-medium text-gray-900 mb-2">
+              Nombre completo <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="nombre"
+              type="text"
+              formControlName="nombre"
+              placeholder="Ej. Daniel Solutions SRL"
+              class="block w-full rounded-lg border-0 py-2.5 px-3.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm transition-shadow"
+              [class.ring-red-500]="f['nombre'].touched && f['nombre'].invalid"
+              [class.focus:ring-red-600]="f['nombre'].touched && f['nombre'].invalid"
+            />
+            @if (f['nombre'].touched && f['nombre'].invalid) {
+              <div class="mt-2 text-sm text-red-600">
+                @if (f['nombre'].errors?.['required']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    El nombre es obligatorio
+                  </p>
+                }
+                @if (f['nombre'].errors?.['minlength']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    Debe tener al menos 3 caracteres
+                  </p>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- RUC / NIT -->
+          <div>
+            <label for="rucNit" class="block text-sm font-medium text-gray-900 mb-2">
+              RUC / NIT <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="rucNit"
+              type="text"
+              formControlName="rucNit"
+              placeholder="131761968"
+              class="block w-full rounded-lg border-0 py-2.5 px-3.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm transition-shadow"
+              [class.ring-red-500]="f['rucNit'].touched && f['rucNit'].invalid"
+              [class.focus:ring-red-600]="f['rucNit'].touched && f['rucNit'].invalid"
+            />
+            @if (f['rucNit'].touched && f['rucNit'].invalid) {
+              <div class="mt-2 text-sm text-red-600">
+                @if (f['rucNit'].errors?.['required']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    El RUC / NIT es obligatorio
+                  </p>
+                }
+                @if (f['rucNit'].errors?.['pattern']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    Debe contener solo números (7-15 dígitos)
+                  </p>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Dirección -->
+          <div>
+            <label for="direccion" class="block text-sm font-medium text-gray-900 mb-2">
+              Dirección <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="direccion"
+              type="text"
+              formControlName="direccion"
+              placeholder="Av. Central #24, Santo Domingo"
+              class="block w-full rounded-lg border-0 py-2.5 px-3.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm transition-shadow"
+              [class.ring-red-500]="f['direccion'].touched && f['direccion'].invalid"
+              [class.focus:ring-red-600]="f['direccion'].touched && f['direccion'].invalid"
+            />
+            @if (f['direccion'].touched && f['direccion'].invalid) {
+              <div class="mt-2 text-sm text-red-600">
+                @if (f['direccion'].errors?.['required']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    La dirección es obligatoria
+                  </p>
+                }
+                @if (f['direccion'].errors?.['minlength']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    Debe tener al menos 5 caracteres
+                  </p>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-900 mb-2">
+              Correo electrónico <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="contacto@danielsolutions.com"
+              class="block w-full rounded-lg border-0 py-2.5 px-3.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm transition-shadow"
+              [class.ring-red-500]="f['email'].touched && f['email'].invalid"
+              [class.focus:ring-red-600]="f['email'].touched && f['email'].invalid"
+            />
+            @if (f['email'].touched && f['email'].invalid) {
+              <div class="mt-2 text-sm text-red-600">
+                @if (f['email'].errors?.['required']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    El correo electrónico es obligatorio
+                  </p>
+                }
+                @if (f['email'].errors?.['email']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    El formato del correo no es válido
+                  </p>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Mensajes de estado -->
+        @if (error) {
+          <div class="mt-6 rounded-lg bg-red-50 p-4 border border-red-200">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-red-800">{{ error }}</p>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="mt-6 rounded-lg bg-green-50 p-4 border border-green-200">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">{{ successMessage }}</p>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Botones -->
+        <div class="mt-8 flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+          <button
+            type="button"
+            (click)="onCancel()"
+            [disabled]="submitting"
+            class="rounded-lg px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            [disabled]="submitting || form.invalid"
+            class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            @if (submitting) {
+              <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              <span>Guardando...</span>
+            } @else {
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Crear cliente</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="mt-6 text-center">
+      <p class="text-xs text-gray-500">
+        Los campos marcados con <span class="text-red-500">*</span> son obligatorios
+      </p>
+    </div>
+  </div>
+</section>
+

@@ -13,7 +13,7 @@ export class ClientService {
   constructor(private readonly http: HttpClient) { }
 
   //Obtener todos los clientes
-  getAllClient(): Observable<IClient[]> {
+  getClients(): Observable<IClient[]> {
     const request = this.http.get<IClient[]>(`${BASE_API_URL}Clientes`);
     return request;
   }
@@ -41,7 +41,7 @@ export class ClientService {
   }
 
   //Borrar un cliente
-  deleteClientById(id: number) {
+  deleteClient(id: number) {
     const request = this.http.delete(`${BASE_API_URL}Clientes/${id}`);
     return request;
   }

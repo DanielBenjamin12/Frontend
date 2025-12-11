@@ -14,6 +14,13 @@ export const routes: Routes = [
     component: HomeComponent,
   },
   {
+    path: 'clientes',
+    loadChildren: () =>
+      import('./Features/Client/Cliente.routes').then(
+        (m) => m.CLIENT_ROUTES
+      ),
+  },
+  {
     path: '**',
     component: ErrorPageComponent,
   },

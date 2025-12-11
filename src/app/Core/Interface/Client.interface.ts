@@ -1,14 +1,15 @@
 import { IInvoice } from "./Invoice.interface";
 
 export interface IClient {
-  Id: number;
-  Nombre: string;
-  RucNit: string;
-  Direccion?: string;
-  Email?: string;
+  id: number;
+  nombre: string;
+  rucNit: string;
+  direccion?: string | null;
+  email?: string | null;
+ facturas?: IInvoice[] | null;
 }
 
-export type CreateClient = Omit<IClient, 'Id'>
+export type CreateClient = Omit<IClient, 'id'>
 
 export type UpdateClient = {
   Nombre?: string;
