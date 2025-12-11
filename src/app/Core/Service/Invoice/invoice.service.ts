@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateInvoice, IInvoice, InvoiceResponse } from '../../Interface/Invoice.interface';
 import { Observable } from 'rxjs';
+import { BASE_API_URL } from '../../Const';
+BASE_API_URL
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +14,18 @@ export class InvoiceService {
 
   //Obtener todas las facturas
   getAllInvoice(): Observable<InvoiceResponse[]> {
-    return this.http.get<InvoiceResponse[]>(``);
+    return this.http.get<InvoiceResponse[]>(`${BASE_API_URL}Facturas`);
   }
 
   //Obtener una factura por id
   getInvoiceById(id: number): Observable<IInvoice> {
-    return this.http.get<IInvoice>(``);
+    return this.http.get<IInvoice>(`${BASE_API_URL}Facturas/${id}`);
   }
 
   //Crear una factura
   createInvoice(paylod: CreateInvoice):Observable<InvoiceResponse>{
     return this.http.post<InvoiceResponse>(
-      ``,
+      `${BASE_API_URL}Facturas`,
       paylod
     )
   }
@@ -31,7 +33,7 @@ export class InvoiceService {
 
   //Borrar una factura por id
   deleteInvoiceById(id: number){
-    return this.http.delete(``)
+    return this.http.delete(`${BASE_API_URL}Facturas/${id}`)
   }
 
 }

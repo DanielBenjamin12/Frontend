@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CreateProduct, IProduct, UpdateProduct } from '../../Interface/Product.interface';
+import { BASE_API_URL } from '../../Const';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class ProductService {
 
   //Obtener todos los productos
   getAllProduct(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(``);
+    return this.http.get<IProduct[]>(`${BASE_API_URL}/Productos`);
   }
 
   //Obtener un producto por id
@@ -24,7 +26,7 @@ export class ProductService {
   //Crear un producto
   createProduct(paylod: CreateProduct): Observable<IProduct> {
     return this.http.post<IProduct>(
-      ``,
+      `${BASE_API_URL}/Productos`,
       paylod
     )
   }
@@ -34,16 +36,15 @@ export class ProductService {
     id: number,
     paylod: UpdateProduct
   ): Observable<IProduct> {
-    
     return this.http.put<IProduct>(
-      ``,
+      `${BASE_API_URL}/Productos/${id}`,
       paylod
     )
   }
 
   //Borrar un producto
   deleteProduct(id: number) {
-    return this.http.delete(``)
+    return this.http.delete(`${BASE_API_URL}/Productos/${id}`)
   }
 
 }
