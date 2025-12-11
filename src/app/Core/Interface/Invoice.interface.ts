@@ -21,7 +21,7 @@ export type InvoiceLineaCreate = {
 }
 
 export type CreateInvoice = {
-  Cliente: number;
+  ClienteId: number;
   Lineas: InvoiceLineaCreate[]
   Comentario: string
 }

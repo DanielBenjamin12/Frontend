@@ -9,3 +9,10 @@ export interface IClient {
 }
 
 export type CreateClient = Omit<IClient, 'Id'>
+
+export type UpdateClient = {
+  Nombre?: string;
+  RucNit?: string;
+  Direccion?: string;
+  Email?: string;
+}

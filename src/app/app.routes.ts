@@ -12,7 +12,6 @@ export const routes: Routes = [
   {
     path: 'Home',
     component: HomeComponent,
-
   },
   {
     path: '**',

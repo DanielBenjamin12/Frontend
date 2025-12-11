@@ -12,3 +12,12 @@ export interface IProduct {
 
 
 export type CreateProduct = Omit<IProduct, 'Id'>
+
+
+export type UpdateProduct = {
+  Nombre?: string;
+  PrecioUnitario?: number;
+  Stock?: number;
+
+  InvoiceDetail: IInvoiceDetail[];
+}
