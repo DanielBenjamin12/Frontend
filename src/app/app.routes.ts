@@ -21,6 +21,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'productos',
+    loadChildren: () =>
+      import('./Features/Product/Product.routes').then(
+        (m) => m.PRODUCT_ROUTES
+      ),
+  },
+  {
     path: '**',
     component: ErrorPageComponent,
   },

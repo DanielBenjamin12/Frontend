@@ -2,22 +2,18 @@ import { IInvoiceDetail } from "./InvoiceDetail.interface";
 
 
 export interface IProduct {
-  Id: number;
-  Nombre: string;
-  PrecioUnitario: number;
-  Stock: number
-
-  InvoiceDetail: IInvoiceDetail[];
+  id: number;
+  nombre: string;
+  precioUnitario: number;
+  stock: number
 }
 
 
-export type CreateProduct = Omit<IProduct, 'Id'>
+export type CreateProduct = Omit<IProduct, 'id'>
 
 
 export type UpdateProduct = {
-  Nombre?: string;
-  PrecioUnitario?: number;
-  Stock?: number;
-
-  InvoiceDetail: IInvoiceDetail[];
+  nombre?: string;
+  precioUnitario?: number;
+  stock?: number;
 }

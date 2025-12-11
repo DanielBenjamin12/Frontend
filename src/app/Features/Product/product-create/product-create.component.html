@@ -1,0 +1,279 @@
+<section class="min-h-[calc(100vh-4rem)] px-4 py-8 sm:px-6 lg:px-8 bg-gray-50">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-2">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900">Crear nuevo producto</h1>
+          <p class="mt-1 text-sm text-gray-600">Completa el formulario con la información del producto</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="bg-white rounded-xl shadow-sm ring-1 ring-gray-900/5">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-6 sm:p-8">
+        <div class="space-y-6">
+          <!-- Nombre del producto -->
+          <div>
+            <label for="nombre" class="block text-sm font-medium text-gray-900 mb-2">
+              Nombre del producto <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+              <input
+                id="nombre"
+                type="text"
+                formControlName="nombre"
+                placeholder="Ej. Laptop Lenovo ThinkPad"
+                class="block w-full rounded-lg border-0 py-2.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm transition-shadow"
+                [class.ring-red-500]="f['nombre'].touched && f['nombre'].invalid"
+                [class.focus:ring-red-600]="f['nombre'].touched && f['nombre'].invalid"
+              />
+            </div>
+            @if (f['nombre'].touched && f['nombre'].invalid) {
+              <div class="mt-2 text-sm text-red-600">
+                @if (f['nombre'].errors?.['required']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    El nombre del producto es obligatorio
+                  </p>
+                }
+                @if (f['nombre'].errors?.['minlength']) {
+                  <p class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    Debe tener al menos 3 caracteres
+                  </p>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Grid para precio y stock -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Precio Unitario -->
+            <div>
+              <label for="precioUnitario" class="block text-sm font-medium text-gray-900 mb-2">
+                Precio unitario (DOP) <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span class="text-gray-500 sm:text-sm">$</span>
+                </div>
+                <input
+                  id="precioUnitario"
+                  type="number"
+                  step="0.01"
+                  formControlName="precioUnitario"
+                  placeholder="65000.00"
+                  class="block w-full rounded-lg border-0 py-2.5 pl-8 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm transition-shadow"
+                  [class.ring-red-500]="f['precioUnitario'].touched && f['precioUnitario'].invalid"
+                  [class.focus:ring-red-600]="f['precioUnitario'].touched && f['precioUnitario'].invalid"
+                />
+              </div>
+              @if (f['precioUnitario'].value && f['precioUnitario'].valid) {
+                <p class="mt-2 text-xs text-gray-500">
+                  Vista previa: {{ formatPrice(f['precioUnitario'].value.toString()) }}
+                </p>
+              }
+              @if (f['precioUnitario'].touched && f['precioUnitario'].invalid) {
+                <div class="mt-2 text-sm text-red-600">
+                  @if (f['precioUnitario'].errors?.['required']) {
+                    <p class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                      El precio es obligatorio
+                    </p>
+                  }
+                  @if (f['precioUnitario'].errors?.['min']) {
+                    <p class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                      El precio debe ser mayor a 0
+                    </p>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Stock -->
+            <div>
+              <label for="stock" class="block text-sm font-medium text-gray-900 mb-2">
+                Stock inicial <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  </svg>
+                </div>
+                <input
+                  id="stock"
+                  type="number"
+                  formControlName="stock"
+                  placeholder="15"
+                  class="block w-full rounded-lg border-0 py-2.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm transition-shadow"
+                  [class.ring-red-500]="f['stock'].touched && f['stock'].invalid"
+                  [class.focus:ring-red-600]="f['stock'].touched && f['stock'].invalid"
+                />
+              </div>
+              @if (f['stock'].value && f['stock'].valid) {
+                <p class="mt-2 text-xs" [class]="getStockLevel().class">
+                  {{ getStockLevel().text }}
+                </p>
+              }
+              @if (f['stock'].touched && f['stock'].invalid) {
+                <div class="mt-2 text-sm text-red-600">
+                  @if (f['stock'].errors?.['required']) {
+                    <p class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                      El stock es obligatorio
+                    </p>
+                  }
+                  @if (f['stock'].errors?.['min']) {
+                    <p class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                      El stock no puede ser negativo
+                    </p>
+                  }
+                  @if (f['stock'].errors?.['pattern']) {
+                    <p class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                      Solo se permiten números enteros
+                    </p>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Resumen del producto (preview) -->
+          @if (form.valid) {
+            <div class="rounded-lg bg-blue-50 p-4 border border-blue-200">
+              <h4 class="text-sm font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Vista previa del producto
+              </h4>
+              <dl class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <dt class="text-blue-700">Nombre:</dt>
+                  <dd class="font-medium text-blue-900">{{ f['nombre'].value }}</dd>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <dt class="text-blue-700">Precio unitario:</dt>
+                  <dd class="font-medium text-blue-900">{{ formatPrice(f['precioUnitario'].value.toString()) }}</dd>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <dt class="text-blue-700">Stock inicial:</dt>
+                  <dd class="font-medium text-blue-900">{{ f['stock'].value }} unidades</dd>
+                </div>
+                <div class="flex justify-between text-sm pt-2 border-t border-blue-200">
+                  <dt class="text-blue-700 font-medium">Valor total:</dt>
+                  <dd class="font-bold text-blue-900">
+                    {{ formatPrice((f['precioUnitario'].value * f['stock'].value).toString()) }}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          }
+        </div>
+
+        <!-- Mensajes de estado -->
+        @if (error) {
+          <div class="mt-6 rounded-lg bg-red-50 p-4 border border-red-200">
+            <div class="flex">
+              <div class="shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-red-800">{{ error }}</p>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="mt-6 rounded-lg bg-green-50 p-4 border border-green-200">
+            <div class="flex">
+              <div class="shrink-0">
+                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">{{ successMessage }}</p>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Botones -->
+        <div class="mt-8 flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+          <button
+            type="button"
+            (click)="onCancel()"
+            [disabled]="submitting"
+            class="rounded-lg px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            [disabled]="submitting || form.invalid"
+            class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            @if (submitting) {
+              <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              <span>Guardando...</span>
+            } @else {
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Crear producto</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="mt-6 text-center">
+      <p class="text-xs text-gray-500">
+        Los campos marcados con <span class="text-red-500">*</span> son obligatorios
+      </p>
+    </div>
+  </div>
+</section>

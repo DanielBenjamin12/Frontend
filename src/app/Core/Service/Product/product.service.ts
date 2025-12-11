@@ -15,36 +15,36 @@ export class ProductService {
 
   //Obtener todos los productos
   getAllProduct(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(`${BASE_API_URL}/Productos`);
+    return this.http.get<IProduct[]>(`${BASE_API_URL}Productos`);
   }
 
   //Obtener un producto por id
   getProductById(id: number): Observable<IProduct> {
-    return this.http.get<IProduct>(``);
+    return this.http.get<IProduct>(`${BASE_API_URL}Productos/${id}`);
   }
 
   //Crear un producto
   createProduct(paylod: CreateProduct): Observable<IProduct> {
     return this.http.post<IProduct>(
-      `${BASE_API_URL}/Productos`,
+      `${BASE_API_URL}Productos`,
       paylod
     )
   }
 
   //Actualizar un producto
-  updateProductById(
-    id: number,
+  updateProduct(
+    id: string,
     paylod: UpdateProduct
   ): Observable<IProduct> {
     return this.http.put<IProduct>(
-      `${BASE_API_URL}/Productos/${id}`,
+      `${BASE_API_URL}Productos/${id}`,
       paylod
     )
   }
 
   //Borrar un producto
   deleteProduct(id: number) {
-    return this.http.delete(`${BASE_API_URL}/Productos/${id}`)
+    return this.http.delete(`${BASE_API_URL}Productos/${id}`)
   }
 
 }
