@@ -1,0 +1,282 @@
+<div class="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 class="text-4xl font-bold text-gray-900">Facturas</h1>
+          <p class="mt-2 text-sm text-gray-600">Gestiona y visualiza todas tus facturas</p>
+        </div>
+        <button
+          (click)="goToCreateInvoice()"
+          class="inline-flex items-center px-6 py-3 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Nueva Factura
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-20">
+      <div class="relative">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-md">
+      <div class="flex items-center gap-4">
+        <div class="shrink-0">
+          <svg class="h-8 w-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-red-800">Error al cargar facturas</h3>
+          <p class="text-sm text-red-700 mt-1">{{ error }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="!loading && !error">
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Revenue -->
+        <div class="bg-linear-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-blue-100 text-sm font-medium">Ingresos Totales</p>
+              <p class="text-3xl font-bold mt-2">{{ formatCurrency(totalRevenue) }}</p>
+            </div>
+            <div class="bg-white/20 rounded-lg p-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Invoices -->
+        <div class="bg-lineat-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-green-100 text-sm font-medium">Total Facturas</p>
+              <p class="text-3xl font-bold mt-2">{{ totalInvoices }}</p>
+            </div>
+            <div class="bg-white/20 rounded-lg p-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Average Invoice -->
+        <div class="bg-linear-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-100 text-sm font-medium">Promedio</p>
+              <p class="text-3xl font-bold mt-2">{{ formatCurrency(averageInvoice) }}</p>
+            </div>
+            <div class="bg-white/20 rounded-lg p-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Taxes -->
+        <div class="bg-linear-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-orange-100 text-sm font-medium">Impuestos</p>
+              <p class="text-3xl font-bold mt-2">{{ formatCurrency(totalTaxes) }}</p>
+            </div>
+            <div class="bg-white/20 rounded-lg p-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+            <div class="relative">
+              <input
+                type="text"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="onSearchChange()"
+                placeholder="Buscar por cliente o número de factura..."
+                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Month Filter -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Mes</label>
+            <select
+              [(ngModel)]="selectedMonth"
+              (ngModelChange)="onMonthChange()"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">Todos los meses</option>
+              <option *ngFor="let month of availableMonths" [value]="month">
+                {{ getMonthName(month) }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Sort -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ordenar por</label>
+            <div class="flex gap-2">
+              <select
+                [(ngModel)]="sortBy"
+                (ngModelChange)="onSortChange()"
+                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="date">Fecha</option>
+                <option value="total">Total</option>
+                <option value="client">Cliente</option>
+              </select>
+              <button
+                (click)="toggleSortOrder()"
+                class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                <svg *ngIf="sortOrder === 'desc'" class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+                <svg *ngIf="sortOrder === 'asc'" class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clear Filters -->
+        <div *ngIf="searchTerm || selectedMonth" class="mt-4 flex justify-end">
+          <button
+            (click)="clearFilters()"
+            class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+            Limpiar filtros
+          </button>
+        </div>
+      </div>
+
+      <!-- Invoice List -->
+      <div class="space-y-4">
+        <!-- Empty State -->
+        <div *ngIf="filteredFacturas.length === 0" class="text-center py-16 bg-white rounded-xl shadow-md">
+          <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 mb-4">
+            <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            {{ facturas.length === 0 ? 'No hay facturas' : 'No se encontraron resultados' }}
+          </h3>
+          <p class="text-sm text-gray-500">
+            {{ facturas.length === 0 ? 'Crea tu primera factura para comenzar' : 'Intenta ajustar los filtros de búsqueda' }}
+          </p>
+        </div>
+
+        <!-- Invoice Cards -->
+        <div *ngFor="let factura of filteredFacturas"
+             class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-200 overflow-hidden cursor-pointer group"
+             (click)="viewInvoice(factura.id)">
+          <div class="p-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+
+              <!-- Left Section -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                    #{{ factura.id }}
+                  </span>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                    {{ factura.detalles.length }} productos
+                  </span>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+                  {{ factura.clienteNombre || 'Cliente desconocido' }}
+                </h3>
+
+                <div class="flex items-center gap-4 text-sm text-gray-500">
+                  <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    {{ formatDate(factura.fecha) }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Middle Section - Totals -->
+              <div class="flex flex-col md:flex-row gap-6 md:items-center">
+                <div class="text-left md:text-right">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Subtotal</p>
+                  <p class="text-lg font-semibold text-gray-700">{{ formatCurrency(factura.totalBruto) }}</p>
+                </div>
+
+                <div class="text-left md:text-right">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">ITBIS</p>
+                  <p class="text-lg font-semibold text-gray-700">{{ formatCurrency(factura.impuestos) }}</p>
+                </div>
+
+                <div class="text-left md:text-right bg-linear-to-br from-blue-50 to-blue-100 rounded-lg p-4">
+                  <p class="text-xs text-blue-600 uppercase tracking-wide font-semibold mb-1">Total</p>
+                  <p class="text-2xl font-bold text-blue-700">{{ formatCurrency(factura.totalNeto) }}</p>
+                </div>
+              </div>
+
+              <!-- Right Section - Actions -->
+              <div class="flex items-center gap-2">
+                <button
+                  (click)="viewInvoice(factura.id)"
+                  class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                  Ver Detalles
+                </button>
+
+                <button
+                  (click)="deleteInvoice($event, factura.id, factura.clienteNombre || 'este cliente')"
+                  class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="h-1 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+        </div>
+      </div>
+
+      <!-- Pagination Info -->
+      <div *ngIf="filteredFacturas.length > 0" class="mt-8 text-center text-sm text-gray-600">
+        Mostrando {{ filteredFacturas.length }} de {{ totalInvoices }} facturas
+      </div>
+    </div>
+
+  </div>
+</div>

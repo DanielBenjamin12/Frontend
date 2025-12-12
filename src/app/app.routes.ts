@@ -28,6 +28,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'facturas',
+    loadChildren: () =>
+      import('./Features/Invoice/Invoice.routes').then(
+        (m) => m.INVOICE_ROUTES
+      ),
+  },
+  {
     path: '**',
     component: ErrorPageComponent,
   },

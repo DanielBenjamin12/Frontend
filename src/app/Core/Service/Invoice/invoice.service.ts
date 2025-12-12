@@ -18,8 +18,8 @@ export class InvoiceService {
   }
 
   //Obtener una factura por id
-  getInvoiceById(id: number): Observable<IInvoice> {
-    return this.http.get<IInvoice>(`${BASE_API_URL}Facturas/${id}`);
+  getInvoiceById(id: number): Observable<InvoiceResponse> {
+    return this.http.get<InvoiceResponse>(`${BASE_API_URL}Facturas/${id}`);
   }
 
   //Crear una factura

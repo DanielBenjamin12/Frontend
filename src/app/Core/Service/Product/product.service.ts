@@ -14,7 +14,7 @@ export class ProductService {
 
 
   //Obtener todos los productos
-  getAllProduct(): Observable<IProduct[]> {
+  getAllProducts(): Observable<IProduct[]> {
     return this.http.get<IProduct[]>(`${BASE_API_URL}Productos`);
   }
 

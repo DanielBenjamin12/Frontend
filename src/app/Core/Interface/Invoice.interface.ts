@@ -3,49 +3,49 @@ import { IInvoiceDetail } from "./InvoiceDetail.interface";
 
 export interface IInvoice {
   id: number;
-  ClienteId: number;
-  Fecha: Date;
-  TotalBruto: number;
-  Impuesto: number;
-  TotalNeto: number;
-  Cliente: IClient;
+  clienteId: number;       // ClienteId
+  fecha: string;             // Fecha
+  totalBruto: number;      // TotalBruto
+  impuestos: number;       // Impuestos
+  totalNeto: number;       // TotalNeto
 
-  InvoiceDetail: IInvoiceDetail[];
+  cliente?: IClient;       // Navegación con Cliente
+  detalles?: IInvoiceDetail[]; // Navegación con Detalles
 }
 
 //-------------- Create ----------------------------------------------------
 
 export type InvoiceLineaCreate = {
-  ProductoId: number;
-  Cantidad: number;
+  productoId: number;   // ProductoId
+  cantidad: number;     // Cantidad
 }
 
 export type CreateInvoice = {
-  ClienteId: number;
-  Lineas: InvoiceLineaCreate[]
-  Comentario: string
+  clienteId: number;                // ClienteId
+  lineas: InvoiceLineaCreate[];  // Lineas
+  comentarios?: string;
 }
 
 //------------- Response ---------------------------------------------------
 
 
 export type DetailResponse = {
-  Id: number;
-  ProductoId: number;
-  ProductoNombre: number;
-  Cantdad: number;
-  PrecioUnitario: number;
-  SubTotal: number;
+  id: number;               // Id
+  productoId: number;       // ProductoId
+  productoNombre?: string;  // ProductoNombre (nullable)
+  cantidad: number;         // Cantidad
+  precioUnitario: number;   // PrecioUnitario
+  subtotal: number;
 }
 
 
 export type InvoiceResponse = {
-  Id: number;
-  ClienteId: number;
-  ClienteNombre: string
-  Fecha: Date;
-  TotalBruto: number;
-  Impuesto: number;
-  TotalNeto: number;
-  Detalles: DetailResponse
+  id: number;                     // Id
+  clienteId: number;              // ClienteId
+  clienteNombre?: string;         // ClienteNombre (nullable)
+  fecha: string;                    // Fecha
+  totalBruto: number;             // TotalBruto
+  impuestos: number;              // Impuestos
+  totalNeto: number;              // TotalNeto
+  detalles: DetailResponse[];
 }
